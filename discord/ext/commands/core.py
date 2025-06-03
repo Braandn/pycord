@@ -1326,7 +1326,7 @@ class GroupMixin(Generic[CogT]):
                 self.prefixed_commands[alias] = cmd
         return command
 
-    def walk_commands(self) -> Generator[Command[CogT, Any, Any], None, None]:
+    def walk_commands(self) -> Generator[Command[CogT, Any, Any]]:
         """An iterator that recursively walks through all commands and subcommands.
 
         .. versionchanged:: 1.4
@@ -1695,7 +1695,7 @@ def command(
         func: (
             Callable[Concatenate[ContextT, P], Coro[Any]]
             | Callable[Concatenate[CogT, ContextT, P], Coro[Any]]
-        )
+        ),
     ) -> CommandT:
         if isinstance(func, Command):
             raise TypeError("Callback is already a command.")

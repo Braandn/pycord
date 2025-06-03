@@ -1,7 +1,7 @@
 [build-system]
 requires = [
-    "setuptools>=62.6,<70",
-    "setuptools-scm>=6.2,<8",
+    "setuptools>=62.6,<=78.1.0",
+    "setuptools-scm>=6.2,<=8.2.1",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -11,8 +11,8 @@ authors = [
     {name = "Pycord Development"}
 ]
 description = "A Python wrapper for the Discord API"
-readme = "README.rst"
-requires-python = ">=3.8"
+readme = {content-type = "text/x-rst", file = "README.rst"}
+requires-python = ">=3.9"
 license = {text = "MIT"}
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -20,11 +20,11 @@ classifiers = [
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Internet",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -53,10 +53,12 @@ packages = [
     "discord.ext.tasks",
     "discord.ext.pages",
     "discord.ext.bridge",
+    "discord.bin",
 ]
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements/_.txt"}
+readme = {content-type = "text/x-rst", file = "README.rst"}
 
 [tool.setuptools.dynamic.optional-dependencies]
 docs = {file = "requirements/docs.txt"}
@@ -66,7 +68,7 @@ voice = {file = "requirements/voice.txt"}
 [tool.setuptools_scm]
 
 [tool.black]
-target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
 
 [tool.isort]
 profile = "black"
@@ -85,7 +87,7 @@ extension-pkg-whitelist = [
     "pydantic",
     "ujson"
 ]
-py-version = 3.8
+py-version = 3.9
 
 [tool.pylint.messages_control]
 enable = [

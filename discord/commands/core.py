@@ -233,7 +233,7 @@ class ApplicationCommand(_BaseCommand, Generic[CogT, P, T]):
             "__default_member_permissions__",
             kwargs.get("default_member_permissions", None),
         )
-        self.nsfw: bool | None = getattr(func, "__nsfw__", kwargs.get("nsfw", None))
+        self.nsfw: bool | None = getattr(func, "__nsfw__", kwargs.get("nsfw", False))
 
         integration_types = getattr(
             func, "__integration_types__", kwargs.get("integration_types", None)
@@ -1255,7 +1255,7 @@ class SlashCommandGroup(ApplicationCommand):
         self.default_member_permissions: Permissions | None = kwargs.get(
             "default_member_permissions", None
         )
-        self.nsfw: bool | None = kwargs.get("nsfw", None)
+        self.nsfw: bool | None = kwargs.get("nsfw", False)
 
         integration_types = kwargs.get("integration_types", None)
         contexts = kwargs.get("contexts", None)
@@ -1513,7 +1513,7 @@ class SlashCommandGroup(ApplicationCommand):
             else:
                 await self._after_invoke(ctx)  # type: ignore
 
-    def walk_commands(self) -> Generator[SlashCommand | SlashCommandGroup, None, None]:
+    def walk_commands(self) -> Generator[SlashCommand | SlashCommandGroup]:
         """An iterator that recursively walks through all slash commands and groups in this group.
 
         Yields
@@ -1786,12 +1786,8 @@ class UserCommand(ContextMenuCommand):
                 v["id"] = int(i)
                 user = v
             member["user"] = user
-            target = Member(
-                data=member,
-                guild=ctx.interaction._state._get_guild(ctx.interaction.guild_id),
-                state=ctx.interaction._state,
-            )
-
+            cache_flag = ctx.interaction._state.member_cache_flags.interaction
+            target = ctx.guild._get_and_update_member(member, user["id"], cache_flag)
         if self.cog is not None:
             await self.callback(self.cog, ctx, target)
         else:
@@ -2046,11 +2042,13 @@ def command(**kwargs):
 
 docs = "https://discord.com/developers/docs"
 valid_locales = [
+    "id",
     "da",
     "de",
     "en-GB",
     "en-US",
     "es-ES",
+    "es-419",
     "fr",
     "hr",
     "it",

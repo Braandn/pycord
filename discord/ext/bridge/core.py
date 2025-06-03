@@ -41,7 +41,9 @@ from discord import (
 )
 
 from ...utils import MISSING, find, get, warn_deprecated
-from ..commands import BadArgument
+from ..commands import (
+    BadArgument,
+)
 from ..commands import Bot as ExtBot
 from ..commands import (
     Command,
@@ -230,7 +232,7 @@ class BridgeCommand:
         except AttributeError as e:
             # if it doesn't exist, check this list, if the name of
             # the parameter is here
-            if name is self.__special_attrs__:
+            if name in self.__special_attrs__:
                 raise e
 
             # looks up the result in the variants.
@@ -660,7 +662,7 @@ def bridge_option(name, input_type=None, **kwargs):
     Attributes
     ----------
     parameter_name: :class:`str`
-        The name of the target parameter this option is mapped to.
+        The name of the target function parameter this option is mapped to.
         This allows you to have a separate UI ``name`` and parameter name.
     """
 
